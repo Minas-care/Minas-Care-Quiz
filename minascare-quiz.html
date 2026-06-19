@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hair Consultation | Mina's Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2A7A3B;
+    --green-dark: #1E5C2B;
+    --green-light: #EBF5EC;
+    --black: #111111;
+    --grey: #6B6B6B;
+    --grey-light: #F5F5F5;
+    --border: #E0E0E0;
+    --white: #FFFFFF;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--white);
+    font-family: 'Inter', sans-serif;
+    color: var(--black);
+    min-height: 100vh;
+    font-size: 15px;
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: var(--white);
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--green);
+    line-height: 1;
+  }
+  .logo-sub {
+    font-size: 0.65rem;
+    color: var(--grey);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    margin-top: 2px;
+  }
+  .header-right {
+    font-size: 0.75rem;
+    color: var(--grey);
+    font-weight: 400;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    width: 100%;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    transition: width 0.4s ease;
+  }
+
+  /* WRAP */
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 36px 20px 80px;
+  }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; animation: up 0.35s ease both; }
+  @keyframes up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* WELCOME */
+  .welcome-tag {
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.72rem;
+    color: var(--grey);
+    padding: 4px 12px;
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .welcome-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--black);
+    line-height: 1.2;
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+  }
+  .welcome-title span { color: var(--green); }
+  .welcome-body {
+    font-size: 0.95rem;
+    color: var(--grey);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+  .audience-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+  .audience-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .audience-btn {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 16px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--white);
+    transition: all 0.18s;
+  }
+  .audience-btn:hover { border-color: var(--green); background: var(--green-light); }
+  .audience-btn .icon { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+  .audience-btn .a-label { font-weight: 600; font-size: 0.9rem; color: var(--black); display: block; margin-bottom: 4px; }
+  .audience-btn .a-sub { font-size: 0.75rem; color: var(--grey); line-height: 1.4; }
+
+  /* QUESTION */
+  .q-meta {
+    font-size: 0.72rem;
+    color: var(--grey);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .q-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--black);
+    line-height: 1.3;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 13px 16px;
+    cursor: pointer;
+    background: var(--white);
+    transition: all 0.15s;
+    text-align: left;
+  }
+  .opt:hover { border-color: var(--green); background: var(--green-light); }
+  .opt.selected { border-color: var(--green); background: var(--green-light); }
+  .opt-circle {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    background: var(--white);
+    transition: all 0.15s;
+  }
+  .opt.selected .opt-circle {
+    background: var(--green);
+    border-color: var(--green);
+    box-shadow: inset 0 0 0 3px var(--white);
+  }
+  .opt-text .main { font-size: 0.92rem; font-weight: 500; color: var(--black); }
+  .opt-text .sub { font-size: 0.77rem; color: var(--grey); margin-top: 2px; line-height: 1.4; }
+
+  /* CONTACT */
+  .contact-intro {
+    font-size: 0.9rem;
+    color: var(--grey);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 7px;
+  }
+  .field input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: var(--black);
+    background: var(--white);
+    outline: none;
+    transition: border 0.15s;
+  }
+  .field input:focus { border-color: var(--green); }
+  .field-note { font-size: 0.72rem; color: var(--grey); margin-top: 5px; }
+  .optional { font-weight: 300; text-transform: none; font-size: 0.72rem; color: var(--grey); }
+
+  /* BUTTONS */
+  .btn-green {
+    display: block;
+    width: 100%;
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.15s;
+    text-align: center;
+  }
+  .btn-green:hover { background: var(--green-dark); }
+  .btn-green:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-outline {
+    display: block;
+    width: 100%;
+    background: var(--white);
+    color: var(--green);
+    border: 1.5px solid var(--green);
+    border-radius: var(--radius);
+    padding: 13px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.15s;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn-outline:hover { background: var(--green-light); }
+  .btn-back {
+    background: none;
+    border: none;
+    color: var(--grey);
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 20px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .btn-back:hover { color: var(--black); }
+
+  /* LOADING */
+  .loading-wrap { text-align: center; padding: 60px 20px; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+    margin: 0 auto 18px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-wrap p { color: var(--grey); font-size: 0.88rem; font-weight: 300; }
+
+  /* RESULTS */
+  .result-intro {
+    border-left: 3px solid var(--green);
+    padding: 14px 16px;
+    background: var(--green-light);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 28px;
+  }
+  .result-intro .hi { font-size: 0.75rem; color: var(--green); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .result-intro .message { font-size: 0.92rem; color: var(--black); line-height: 1.6; font-weight: 300; }
+
+  .section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+
+  .product-item {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .p-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-light);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .p-name { font-size: 0.88rem; font-weight: 600; color: var(--black); margin-bottom: 3px; }
+  .p-why { font-size: 0.77rem; color: var(--grey); line-height: 1.45; }
+
+  .kit-box {
+    border: 1.5px solid var(--green);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .kit-box .kit-label { font-size: 0.72rem; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .kit-box .kit-title { font-size: 1rem; font-weight: 600; color: var(--black); margin-bottom: 4px; }
+  .kit-box .kit-body { font-size: 0.82rem; color: var(--grey); line-height: 1.5; margin-bottom: 14px; }
+  .kit-box .kit-price { font-size: 1.1rem; font-weight: 700; color: var(--green); margin-bottom: 14px; }
+
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  .salon-box {
+    background: var(--green);
+    border-radius: var(--radius);
+    padding: 22px 18px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .salon-box h3 { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 6px; }
+  .salon-box p { font-size: 0.82rem; color: rgba(255,255,255,0.75); line-height: 1.55; margin-bottom: 16px; }
+  .salon-box .salon-detail { font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-top: 10px; }
+  .btn-white {
+    display: block;
+    background: var(--white);
+    color: var(--green);
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .btn-white:hover { opacity: 0.9; }
+
+  .share-label { font-size: 0.75rem; font-weight: 600; color: var(--black); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .share-row { display: flex; gap: 8px; }
+  .share-wa {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 11px; border-radius: var(--radius);
+    background: #25D366; color: white;
+    font-size: 0.82rem; font-weight: 600;
+    text-decoration: none; transition: opacity 0.15s;
+  }
+  .share-ig {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 11px; border-radius: var(--radius);
+    background: #E1306C; color: white;
+    font-size: 0.82rem; font-weight: 600;
+    text-decoration: none; transition: opacity 0.15s;
+  }
+  .share-wa:hover, .share-ig:hover { opacity: 0.85; }
+
+  .restart { text-align: center; margin-top: 28px; }
+  .restart button {
+    background: none; border: none; color: var(--grey);
+    font-size: 0.8rem; cursor: pointer; text-decoration: underline;
+    font-family: 'Inter', sans-serif;
+  }
+
+  @media (max-width: 400px) {
+    .welcome-title { font-size: 1.65rem; }
+    .audience-row { grid-template-columns: 1fr; }
+    .share-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">mina's care</div>
+    <div class="logo-sub">Safe and effective plant based formulas</div>
+  </div>
+  <div class="header-right">Hair Quiz</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+<div class="wrap">
+
+  <!-- WELCOME -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome-tag">Free · 2 minutes</div>
+    <h1 class="welcome-title">Tell us about your hair.<br><span>We'll sort out the rest.</span></h1>
+    <p class="welcome-body">Answer a few honest questions and get a routine that's actually built for your hair, not a generic list.</p>
+    <p class="audience-label">Who is this for?</p>
+    <div class="audience-row">
+      <div class="audience-btn" onclick="startQuiz('adult')">
+        <span class="icon">🌿</span>
+        <span class="a-label">My hair</span>
+        <span class="a-sub">Ages 8 and above</span>
+      </div>
+      <div class="audience-btn" onclick="startQuiz('kids')">
+        <span class="icon">🌸</span>
+        <span class="a-label">My child's hair</span>
+        <span class="a-sub">Ages 2 months to 8 years · past 8, use the other quiz</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="screen" id="screen-questions">
+    <div class="q-meta" id="qMeta"></div>
+    <h2 class="q-title" id="qTitle"></h2>
+    <div class="options" id="qOptions"></div>
+    <button class="btn-green" id="btnNext" onclick="nextQ()" disabled>Continue</button>
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="screen" id="screen-contact">
+    <div class="q-meta">One last thing</div>
+    <h2 class="q-title">What's your name?</h2>
+    <p class="contact-intro">So your results feel a little more personal.</p>
+    <div class="field">
+      <label>First name</label>
+      <input type="text" id="fName" placeholder="e.g. Adaeze" oninput="checkContact()">
+    </div>
+    <button class="btn-green" id="btnContact" onclick="submitContact()" disabled>Show my results</button>
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <p>Building your routine…</p>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="result-intro">
+      <div class="hi" id="resultHeader">Your routine is ready</div>
+      <div class="message" id="resultMessage"></div>
+    </div>
+
+    <div class="section-title" id="productsLabel">What you need</div>
+    <div id="productList"></div>
+    <div id="orderSection"></div>
+
+    <div id="kitSection" style="display:none">
+      <div class="kit-box">
+        <div class="kit-label">Best value</div>
+        <div class="kit-title" id="kitTitle"></div>
+        <div class="kit-body" id="kitBody"></div>
+        <div class="kit-price" id="kitPrice"></div>
+        <a id="kitWaBtn" href="#" class="btn-green" style="text-decoration:none;display:block;text-align:center;">Order the full kit on WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="salon-box">
+      <h3>Want to see faster results?</h3>
+      <p>Come in for a treatment at the salon. We use these same products in all our hair growth services, and our team will sort out a plan for you.</p>
+      <a href="https://wa.me/2347052636310?text=Hi%20Mina%2C%20I%20just%20did%20the%20hair%20quiz%20and%20I'd%20like%20to%20book%20an%20appointment" class="btn-white">Book an appointment →</a>
+      <p class="salon-detail">30 Owolabi Street, Satellite Town, Lagos · Mon–Sat 10am–6pm · Sun 12pm–6pm</p>
+    </div>
+
+    <div class="share-label">Follow us</div>
+    <div class="share-row">
+      <a href="https://instagram.com/minashaircare.ng" target="_blank" class="share-ig">📸 Instagram</a>
+      <a href="https://tiktok.com/@minashaircare" target="_blank" class="share-wa" style="background:#000000;">🎵 TikTok</a>
+    </div>
+
+    <div class="restart"><button onclick="restart()">Start over</button></div>
+  </div>
+
+</div>
+
+<script>
+// ── PRODUCT DATA ─────────────────────────────────────────────────────────────
+
+const PRODUCTS = {
+  prepoo:    { name: "Breakage Defense Detangling Pre-Poo", short: "Pre-Poo" },
+  herbshamp: { name: "Nourish-Revitalize Herbal Shampoo", short: "Herbal Shampoo" },
+  condshamp: { name: "Silky-Smooth Conditioning Shampoo", short: "Conditioning Shampoo" },
+  protein:   { name: "Revive-Repair Protein Deep Treatment", short: "Protein Treatment" },
+  ayurdc:    { name: "Intense Moisture Ayurvedic Deep Conditioner", short: "Ayurvedic Deep Conditioner" },
+  leavein:   { name: "Ultra-Soft Leave-In Conditioner", short: "Leave-In Conditioner" },
+  butter:    { name: "Moisture Lock Ayurvedic Hair Butter", short: "Hair Butter" },
+  oil:       { name: "Growth Stimulating Hair Oil", short: "Growth Oil" },
+  spray:     { name: "Dandruff Defense Itch Relief Scalp Spray", short: "Anti-Itch Scalp Spray" },
+  mist:      { name: "Aqua-Burst Hydrating Hair Mist", short: "Hydrating Mist" },
+  serum:     { name: "Anti-Bald Root Revive Scalp Serum", short: "Root Revive Serum" },
+  // WHY overrides by context handled in routine-specific whyOverrides below
+  kshamp:    { name: "Gentle Cleanse Nourishing Shampoo (Kids)", short: "Kids Shampoo" },
+  kayurdc:   { name: "Intense Moisture Ayur-Deep Conditioner (Kids)", short: "Kids Deep Conditioner" },
+  kleavein:  { name: "Detangling-Softening Leave-In Conditioner (Kids)", short: "Kids Leave-In" },
+  kbutter:   { name: "Thickening Ayurvedic Hair Butter (Kids)", short: "Kids Hair Butter" },
+  koil:      { name: "Speedy Hair Growth Oil (Kids)", short: "Kids Growth Oil" },
+};
+
+const WHY = {
+  prepoo:    "Melts knots and reduces breakage before wash day, less hair lost in the sink.",
+  herbshamp: "African Black Soap and Neem cut through oil, product buildup and dandruff at the root.",
+  condshamp: "Gentle, hydrating cleanse with Silk Amino Acids, cleanses without stripping dry or fragile hair.",
+  protein:   "Hydrolyzed Keratin fills in weak spots along the strand and rebuilds strength from the inside.",
+  ayurdc:    "Amla, Fenugreek and Moringa drench the hair in moisture. Use weekly or fortnightly.",
+  leavein:   "Lightweight daily hydration, always follow with the butter to lock it in.",
+  butter:    "Seals every bit of moisture in. Your hair stays soft between wash days.",
+  oil:       "Rosemary and Black Pepper stimulate the scalp. Massage in and pair with the Hydrating Mist.",
+  spray:     "AHA/BHA, Tea Tree and Aloe tackle dandruff and itch directly at the scalp. Leave it on.",
+  mist:      "Use before the oil or butter to keep hair moisturised and refreshed daily.",
+  serum:     "Biotin, Caffeine and Green Tea target thinning and bald patches at the follicle level.",
+  kshamp:    "Sulphate-free, chamomile-based, gentle enough from 2 months.",
+  kayurdc:   "Deep moisture for young hair. Amla, Fenugreek and Honey, safe from 2 months once there's hair to condition.",
+  kleavein:  "Makes detangling easier and less painful. Use after every wash.",
+  kbutter:   "Seals in moisture and supports thicker, stronger hair growth.",
+  koil:      "Castor Oil and Chamomile, stimulates the scalp gently, safe for children.",
+};
+
+// Context-specific WHY overrides (used when the same product has a different role in a specific routine)
+const WHY_OVERRIDE = {
+  oilyDandruff: {
+    mist: "Keeps the scalp hydrated between washes without adding heaviness. Helps reduce irritation and flaking.",
+    serum: "Biotin, Caffeine and Green Tea stimulate growth and promote a healthier scalp environment, not just for thinning but as part of the overall scalp recovery.",
+  },
+  dryDandruffNoThinning: {
+    mist: "Keeps the scalp hydrated and helps reduce the dryness that triggers flaking in the first place.",
+    oil:  "Nourishes a dry scalp directly. Massage it in to improve circulation and relieve tightness.",
+  },
+  dryDandruffWithThinning: {
+    mist: "Keeps the scalp hydrated and helps reduce the dryness that triggers flaking in the first place.",
+    oil:  "Nourishes a dry scalp directly. Massage it in to improve circulation and relieve tightness.",
+    serum: "Biotin, Caffeine and Green Tea work at the follicle level to stimulate growth, improve scalp health and help fill in areas where the dryness has caused thinning.",
+  },
+  kidsBald: {
+    mist: "Hydrates the scalp and supports a healthy environment for new hair to grow. Safe from 2 months.",
+    koil: "Gentle scalp stimulation with Castor Oil and Chamomile, helps wake up follicles and encourage the first strands to come through.",
+  },
+  kidsLowCut: {
+    mist: "Keeps the scalp and new hair hydrated daily. Light enough to use every day without buildup.",
+  },
+};
+
+// ── ROUTINES ──────────────────────────────────────────────────────────────────
+
+const ROUTINES = {
+
+  dryBreakage: {
+    message: (name) => `${name}, the breakage you're seeing is most likely coming from dryness, your strands are snapping because they're not getting enough moisture. The good news is this is very fixable. Here's your routine:`,
+    products: [
+      { key: "prepoo" },
+      { key: "condshamp" },
+      { key: "ayurdc" },
+      { key: "leavein" },
+      { key: "butter" },
+      { key: "mist" },
+    ],
+    kit: null,
+  },
+
+  weakBreakage: {
+    message: (name) => `${name}, your hair is breaking because the strands themselves are weak, not just dry. You need protein to rebuild the structure first, then moisture to keep it flexible. Use them in this order:`,
+    products: [
+      { key: "prepoo" },
+      { key: "condshamp" },
+      { key: "protein" },
+      { key: "ayurdc" },
+      { key: "leavein" },
+      { key: "butter" },
+      { key: "mist" },
+    ],
+    kit: null,
+  },
+
+  dryness: {
+    message: (name) => `${name}, your hair is thirsty, and for type 4 hair, dullness is almost always a moisture problem. This routine will bring the softness and life back. Be consistent with it:`,
+    products: [
+      { key: "prepoo" },
+      { key: "condshamp" },
+      { key: "ayurdc" },
+      { key: "leavein" },
+      { key: "butter" },
+      { key: "oil" },
+      { key: "mist" },
+    ],
+    kit: null,
+  },
+
+  oilyDandruff: {
+    message: (name) => `${name}, what you're dealing with sounds like an oily scalp or seborrheic dermatitis, the kind where there's buildup, flaking and itch. You need to clarify and treat the scalp directly. Don't skip the spray, that's the one doing the real work:`,
+    products: [
+      { key: "herbshamp" },
+      { key: "mist" },
+      { key: "spray" },
+      { key: "serum" },
+    ],
+    kit: null,
+  },
+
+  dryDandruffNoThinning: {
+    message: (name) => `${name}, your scalp is dry, which is a different problem from oily dandruff and needs a different fix. You don't want to strip the scalp further. Keep it moisturised and stimulated:`,
+    products: [
+      { key: "condshamp" },
+      { key: "mist" },
+      { key: "oil" },
+    ],
+    kit: null,
+  },
+
+  dryDandruffWithThinning: {
+    message: (name) => `${name}, your scalp is dry and it's showing in your edges and density. You need to sort out the dryness and actively work on the thinning at the same time, these four products do both:`,
+    products: [
+      { key: "condshamp" },
+      { key: "mist" },
+      { key: "oil" },
+      { key: "serum" },
+    ],
+    kit: null,
+  },
+
+  lengthRetention: {
+    message: (name) => `${name}, if your goal is real length then you need the full system, not just one or two products. Length retention means less breakage, more moisture and a healthy scalp all working together. Here's everything in your routine:`,
+    products: [
+      { key: "prepoo" },
+      { key: "herbshamp" },
+      { key: "condshamp" },
+      { key: "protein" },
+      { key: "ayurdc" },
+      { key: "leavein" },
+      { key: "butter" },
+      { key: "oil" },
+      { key: "mist" },
+    ],
+    kit: {
+      title: "Ultimate Length Retention System",
+      body: "Get everything above in one bundle, all 9 products, better value than buying them separately.",
+      price: "₦143,000",
+      waText: "Hi, I just did the hair quiz and I'd like to order the Ultimate Length Retention System (₦143,000)."
+    },
+  },
+
+  damage: {
+    message: (name) => `${name}, real talk, heat and chemical damage can't be reversed. The only way to get rid of it is to trim it out as your hair grows. But while you're growing it back, here's how to strengthen what you have and stop the damage getting worse:`,
+    products: [
+      { key: "condshamp" },
+      { key: "protein" },
+      { key: "ayurdc" },
+      { key: "leavein" },
+      { key: "butter" },
+      { key: "mist" },
+    ],
+    kit: null,
+  },
+
+  // KIDS
+  kidsBald: {
+    message: (name, concern) => {
+      if (concern === "growth") return `${name}, slow growth at this stage is really common and usually just means the scalp needs some help. We're keeping the routine short and focused on getting things moving.`;
+      if (concern === "scanty") return `${name}, sparse hair at this age usually comes down to the scalp not being stimulated enough. We're starting simple with what actually makes a difference.`;
+      return `${name}, a dry scalp this early usually means the hair will come in dry too. Sorting the moisture now sets the foundation for softer, healthier growth.`;
+    },
+    products: [
+      { key: "kshamp" },
+      { key: "koil" },
+      { key: "mist" },
+    ],
+    kit: null,
+  },
+
+  kidsLowCut: {
+    message: (name, concern) => {
+      if (concern === "growth") return `${name}, the hair is growing but not fast enough, we hear that a lot. This routine keeps the scalp healthy and the hair strong enough to actually hold the length.`;
+      if (concern === "scanty") return `${name}, the hair is there but thin or patchy in places. This routine works on strengthening each strand as it comes in so the hair grows back fuller.`;
+      return `${name}, hard dry hair at this length is almost always a moisture problem and it's an easy fix with the right products.`;
+    },
+    products: [
+      { key: "kshamp" },
+      { key: "kayurdc" },
+      { key: "kleavein" },
+      { key: "kbutter" },
+      { key: "koil" },
+    ],
+    kit: null,
+  },
+
+  kidsFullHair: {
+    message: (name, concern) => {
+      if (concern === "growth") return `${name}, with this much hair, a full consistent routine is what will push growth further. Nothing complicated, just the right products used regularly.`;
+      if (concern === "scanty") return `${name}, the hair is growing but not as thick or full as you want. Give this routine 8 weeks and you'll start to see the difference in density.`;
+      return `${name}, dryness with this much hair makes everything harder, detangling, styling, retaining length. This routine handles moisture at every step.`;
+    },
+    products: [
+      { key: "kshamp" },
+      { key: "kayurdc" },
+      { key: "kleavein" },
+      { key: "kbutter" },
+      { key: "koil" },
+      { key: "prepoo" },
+      { key: "mist" },
+      { key: "protein" },
+    ],
+    kit: {
+      title: "Kids Ultimate Hair Growth System",
+      body: "Everything above in one bundle, all 8 products including the adult Pre-Poo, Hydrating Mist and Protein Treatment that work alongside the kids range.",
+      price: "₦115,500",
+      waText: "Hi, I just did the hair quiz for my child and I'd like to order the Kids Ultimate Hair Growth System (₦115,500)."
+    },
+  },
+
+};
+
+// ── QUESTIONS ─────────────────────────────────────────────────────────────────
+
+const ADULT_QUESTIONS = [
+  {
+    key: "concern",
+    q: "What's your biggest hair concern right now?",
+    opts: [
+      { label: "Breakage: my hair is dry and stiff", val: "dryBreakage" },
+      { label: "Breakage: my hair feels weak and snaps easily", val: "weakBreakage" },
+      { label: "Dryness and dullness", val: "dryness", sub: "Hair feels rough, lifeless or thirsty" },
+      { label: "Dandruff or itchy scalp", val: "dandruff" },
+      { label: "Slow growth or length retention", val: "lengthRetention", sub: "My hair seems stuck at the same length" },
+      { label: "Heat or chemical damage", val: "damage", sub: "Relaxer, colour or heat stress" },
+    ]
+  },
+  {
+    key: "dandruffType",
+    q: "How would you describe your scalp?",
+    condition: (a) => a.concern === "dandruff",
+    opts: [
+      { label: "Oily, greasy at the roots, flaky", val: "oily", sub: "Buildup even a few days after washing" },
+      { label: "Dry, tight and flaky, sometimes sore", val: "dry", sub: "Scalp feels like it needs moisture" },
+    ]
+  },
+  {
+    key: "thinning",
+    q: "Have you noticed any thinning or hair loss around your edges or scalp?",
+    condition: (a) => a.concern === "dandruff" && a.dandruffType === "dry",
+    opts: [
+      { label: "Yes, I've noticed some thinning or bald spots", val: "yes" },
+      { label: "No, my density seems fine", val: "no" },
+    ]
+  },
+];
+
+const KIDS_QUESTIONS = [
+  {
+    key: "kidsConcern",
+    q: "What's the main concern with your child's hair?",
+    opts: [
+      { label: "Slow or no growth", val: "growth" },
+      { label: "Hair is scanty or thin", val: "scanty" },
+      { label: "Hair is hard and dry", val: "dry" },
+    ]
+  },
+  {
+    key: "kidsHairAmount",
+    q: "How much hair does the child currently have?",
+    opts: [
+      { label: "Still quite bald or very little hair", val: "bald" },
+      { label: "Some hair, like a low cut that covers the scalp", val: "lowcut" },
+      { label: "A good amount of hair", val: "full" },
+    ]
+  }
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+
+let audience = "adult";
+let allQuestions = [];
+let activeQuestions = [];
+let currentQIndex = 0;
+let answers = {};
+let contact = {};
+
+// ── ROUTING LOGIC ─────────────────────────────────────────────────────────────
+
+function getRoutineKey() {
+  if (audience === "kids") {
+    const amt = answers.kidsHairAmount;
+    if (amt === "bald") return "kidsBald";
+    if (amt === "lowcut") return "kidsLowCut";
+    return "kidsFullHair";
+  }
+
+  const concern = answers.concern;
+  if (concern === "dryBreakage") return "dryBreakage";
+  if (concern === "weakBreakage") return "weakBreakage";
+  if (concern === "dryness") return "dryness";
+  if (concern === "lengthRetention") return "lengthRetention";
+  if (concern === "damage") return "damage";
+  if (concern === "dandruff") {
+    if (answers.dandruffType === "oily") return "oilyDandruff";
+    if (answers.dandruffType === "dry") {
+      return answers.thinning === "yes" ? "dryDandruffWithThinning" : "dryDandruffNoThinning";
+    }
+  }
+  return "dryness";
+}
+
+function buildActiveQuestions() {
+  return allQuestions.filter(q => !q.condition || q.condition(answers));
+}
+
+// ── FLOW ──────────────────────────────────────────────────────────────────────
+
+function startQuiz(aud) {
+  audience = aud;
+  allQuestions = aud === "adult" ? ADULT_QUESTIONS : KIDS_QUESTIONS;
+  answers = {};
+  currentQIndex = 0;
+  activeQuestions = buildActiveQuestions();
+  renderQ();
+  show("questions");
+  setProgress(5);
+}
+
+function renderQ() {
+  activeQuestions = buildActiveQuestions();
+  const q = activeQuestions[currentQIndex];
+  document.getElementById("qMeta").textContent = `Question ${currentQIndex + 1} of ${activeQuestions.length}`;
+  document.getElementById("qTitle").textContent = q.q;
+
+  const opts = document.getElementById("qOptions");
+  opts.innerHTML = "";
+  q.opts.forEach(o => {
+    const div = document.createElement("div");
+    div.className = "opt" + (answers[q.key] === o.val ? " selected" : "");
+    div.innerHTML = `<div class="opt-circle"></div><div class="opt-text"><div class="main">${o.label}</div>${o.sub ? `<div class="sub">${o.sub}</div>` : ""}</div>`;
+    div.onclick = () => {
+      document.querySelectorAll(".opt").forEach(x => x.classList.remove("selected"));
+      div.classList.add("selected");
+      answers[q.key] = o.val;
+      document.getElementById("btnNext").disabled = false;
+    };
+    opts.appendChild(div);
+  });
+
+  document.getElementById("btnNext").disabled = !answers[q.key];
+  const pct = ((currentQIndex + 1) / (activeQuestions.length + 2)) * 100;
+  setProgress(pct);
+}
+
+function nextQ() {
+  activeQuestions = buildActiveQuestions();
+  if (currentQIndex < activeQuestions.length - 1) {
+    currentQIndex++;
+    renderQ();
+  } else {
+    setProgress(80);
+    show("contact");
+  }
+}
+
+function goBack() {
+  if (document.getElementById("screen-questions").classList.contains("active")) {
+    if (currentQIndex > 0) {
+      currentQIndex--;
+      // Remove answer for questions that may no longer be valid
+      activeQuestions = buildActiveQuestions();
+      renderQ();
+    } else {
+      show("welcome");
+      setProgress(0);
+    }
+  } else if (document.getElementById("screen-contact").classList.contains("active")) {
+    show("questions");
+    renderQ();
+  }
+}
+
+function checkContact() {
+  const n = document.getElementById("fName").value.trim();
+  document.getElementById("btnContact").disabled = !n;
+}
+
+function submitContact() {
+  contact = {
+    name: document.getElementById("fName").value.trim(),
+  };
+  show("loading");
+  setProgress(90);
+  setTimeout(showResults, 1600);
+}
+
+function showResults() {
+  const key = getRoutineKey();
+  const routine = ROUTINES[key];
+  const name = contact.name || "Hey";
+  const overrides = WHY_OVERRIDE[key] || {};
+
+  const concern = answers.kidsConcern || "";
+  document.getElementById("resultHeader").textContent = audience === "kids" ? "Your child's routine is ready" : "Your routine is ready";
+  document.getElementById("resultMessage").textContent = routine.message(name, concern);
+
+  const list = document.getElementById("productList");
+  list.innerHTML = "";
+  routine.products.forEach((p, i) => {
+    const prod = PRODUCTS[p.key];
+    const why = overrides[p.key] || WHY[p.key];
+    list.innerHTML += `
+      <div class="product-item">
+        <div class="p-num">${i + 1}</div>
+        <div>
+          <div class="p-name">${prod.name}</div>
+          <div class="p-why">${why}</div>
+        </div>
+      </div>`;
+  });
+
+  // Order buttons (shown when no kit, or in addition to kit)
+  const orderSection = document.getElementById("orderSection");
+  const productNames = routine.products.map((p, i) => `${i + 1}. ${PRODUCTS[p.key].short}`).join("\n");
+  const waOrderMsg = encodeURIComponent(`Hi! I just did the Mina's Care hair quiz. Here's my routine:\n\n${productNames}\n\nI'd like to place an order.`);
+  orderSection.innerHTML = `
+    <a href="https://wa.me/2347052636310?text=${waOrderMsg}" class="btn-green" style="text-decoration:none;display:block;text-align:center;margin-top:16px;">Order on WhatsApp</a>
+    <a href="https://minascare.com" target="_blank" class="btn-outline" style="display:block;text-align:center;">Shop on minascare.com</a>
+  `;
+
+  const kitSection = document.getElementById("kitSection");
+  if (routine.kit) {
+    kitSection.style.display = "block";
+    document.getElementById("kitTitle").textContent = routine.kit.title;
+    document.getElementById("kitBody").textContent = routine.kit.body;
+    document.getElementById("kitPrice").textContent = routine.kit.price;
+    document.getElementById("kitWaBtn").href = `https://wa.me/2347052636310?text=${encodeURIComponent(routine.kit.waText)}`;
+  } else {
+    kitSection.style.display = "none";
+  }
+
+  setProgress(100);
+  show("results");
+}
+
+function restart() {
+  answers = {};
+  contact = {};
+  currentQIndex = 0;
+  setProgress(0);
+  show("welcome");
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById("screen-" + id).classList.add("active");
+}
+
+function setProgress(pct) {
+  document.getElementById("progressFill").style.width = pct + "%";
+}
+</script>
+</body>
+</html>
